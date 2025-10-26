@@ -1,29 +1,24 @@
-from fastapi import FastAPI, Depends, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from typing import List
-import json
 import os
-from dotenv import load_dotenv
 
 from database import SessionLocal, Poll, PollOption
 from schemas import PollCreate, PollResponse
 
-# Load environment variables
-load_dotenv()
-
 app = FastAPI()
 
-# Get frontend URL from environment variable
-FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
+# === FRONTEND URL ===
+FRONTEND_URL = os.getenv("FRONTEND_URL", "https://quickpoll-frontend-mcyo.onrender.com")
 
-# CORS for Next.js frontend
+# === CORS SETUP ===
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        FRONTEND_URL,
-        FRONTEND_URL.replace("https://", "http://"),
-        "https://quickpoll-frontend.onrender.com",   # your deployed frontend
+        FRONTEND_URL,                      # deployed frontend
+        FRONTEND_URL.replace("https://", "http://"),  # fallback
+        "http://localhost:3000",           # local dev support
     ],
     allow_credentials=True,
     allow_methods=["*"],
