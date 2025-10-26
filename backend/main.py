@@ -174,3 +174,7 @@ async def like_poll(poll_id: int, db: Session = Depends(get_db)):
     })
     
     return poll
+
+@app.get("/")
+def read_root():
+    return {"message": "QuickPoll API is running"}
