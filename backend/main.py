@@ -20,7 +20,11 @@ FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
 # CORS for Next.js frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[FRONTEND_URL, "https://*.onrender.com"],  # Allow Render domains
+    allow_origins=[
+        FRONTEND_URL,
+        FRONTEND_URL.replace("https://", "http://"),
+        "https://quickpoll-frontend.onrender.com",   # your deployed frontend
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
